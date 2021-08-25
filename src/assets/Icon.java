@@ -18,4 +18,5 @@ public class Icon {
 	public static Image refreshIcon = new ImageIcon("images/refresh.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 	public static Image saveIcon = new ImageIcon("images/save.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 	public static Image successIcon = new ImageIcon("images/success.png").getImage().getScaledInstance(37, 37, Image.SCALE_SMOOTH);
+	public static Image projectIcon = new ImageIcon("images/project.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 }

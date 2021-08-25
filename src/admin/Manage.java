@@ -425,6 +425,7 @@ public class Manage extends AdminPanels {
 	    defaultTableModel.addColumn("Last Name");
 	    defaultTableModel.addColumn("Job Title");
 	    defaultTableModel.addColumn("Department");
+	    defaultTableModel.addColumn("Shift");
 	    defaultTableModel.addColumn("Salary");
 	    defaultTableModel.addColumn("Date Of Birth");
 	    defaultTableModel.addColumn("Phone");
@@ -442,7 +443,8 @@ public class Manage extends AdminPanels {
 	    columnModel.getColumn(7).setPreferredWidth(130);
 	    columnModel.getColumn(8).setPreferredWidth(100);
 	    columnModel.getColumn(9).setPreferredWidth(100);
-	    for (int i=0;i<=8;i++) 
+	    columnModel.getColumn(10).setPreferredWidth(100);
+	    for (int i=0;i<=9;i++) 
 	    table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 	        
 	    displayData();
@@ -492,7 +494,8 @@ public class Manage extends AdminPanels {
 			        String dateOfJoin = resultSet.getString("date_of_join");
 			        String userId = resultSet.getString("user_id");
 			        String password = resultSet.getString("password");
-			        defaultTableModel.addRow(new Object[]{id, fname, lname, jobTitle, dept, salary, dob, phone, dateOfJoin, userId, password});
+			        String shift = resultSet.getString("shift");
+			        defaultTableModel.addRow(new Object[]{id, fname, lname, jobTitle, dept, shift, salary, dob, phone, dateOfJoin, userId, password});
 				}
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(new JOptionPane(), "Something went wrong!", "Alert", JOptionPane.ERROR_MESSAGE);
@@ -611,6 +614,108 @@ public class Manage extends AdminPanels {
 				salaryIncrementFrame.setVisible(true);
 			}
 		});
+		
+		JMenuItem shiftMenuItem = new JMenuItem("Change Shift");
+		shiftMenuItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				connection.DatabaseConnection db = new connection.DatabaseConnection();
+				Connection conn = null;
+				conn = db.getConnection(conn);
+				int shiftValue = 0;
+				try {
+					PreparedStatement pstmt = conn.prepareStatement("select shift from employees where id=?");
+					pstmt.setInt(1,popupMenuId);
+					ResultSet rs = pstmt.executeQuery();
+					if (rs.next()) {
+						shiftValue = rs.getInt("shift");
+					}
+				} catch(Exception e2) {
+					e2.printStackTrace();
+				} finally {
+					try {
+						conn.close();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				
+				JFrame shiftFrame = new JFrame("Shift");
+				shiftFrame.setLayout(new GridBagLayout());
+				GridBagConstraints sgbc = new GridBagConstraints();
+				sgbc.gridx=0;sgbc.gridy=0;sgbc.gridwidth=2;
+				sgbc.insets = new Insets(0,0,20,0);
+				JLabel headerLabel = new JLabel("Change Shift");
+				headerLabel.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,23));
+				shiftFrame.add(headerLabel,sgbc);
+				sgbc.gridx=0;sgbc.gridy=1;sgbc.gridwidth=1;
+				sgbc.insets = new Insets(0,0,20,10);
+				JLabel empLabel = new JLabel("Employee ID");
+				shiftFrame.add(empLabel,sgbc);
+				sgbc.gridx=1;sgbc.gridy=1;sgbc.gridwidth=1;
+				JTextField empValue = new JTextField(Integer.toString(popupMenuId));
+				empValue.setEditable(false);
+				empValue.setPreferredSize(new Dimension(100,30));
+				shiftFrame.add(empValue,sgbc);
+				sgbc.gridx=0;sgbc.gridy=2;sgbc.gridwidth=1;
+				JLabel slabel = new JLabel("Shift");
+				shiftFrame.add(slabel,sgbc);
+				sgbc.gridx=1;sgbc.gridy=2;sgbc.gridwidth=1;
+				String shifts[] = {"1","2","3"};
+				JComboBox<String> sbox = new JComboBox<String>(shifts);
+				sbox.setSelectedItem(Integer.toString(shiftValue));
+				sbox.setPreferredSize(new Dimension(100,30));
+				shiftFrame.add(sbox,sgbc);
+				sgbc.gridx=0;sgbc.gridy=3;sgbc.gridwidth=2;
+				sgbc.insets = new Insets(0,0,20,0);
+				JButton sbtn = new JButton("Save");
+				sbtn.setPreferredSize(new Dimension(100,30));
+				shiftFrame.add(sbtn,sgbc);
+				
+				sbtn.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						int id = Integer.parseInt(empValue.getText());
+						int shift = Integer.parseInt((String) sbox.getSelectedItem());
+						connection.DatabaseConnection db = new connection.DatabaseConnection();
+						Connection conn = null;
+						conn = db.getConnection(conn);
+						try {
+							PreparedStatement pstmt = conn.prepareStatement("update employees set shift=? where id=?");
+							pstmt.setInt(1, shift);
+							pstmt.setInt(2, id);
+							int flag = pstmt.executeUpdate();
+							if (flag != 0) {
+								shiftFrame.setVisible(false);
+							}
+						} catch (Exception e3) {
+							e3.printStackTrace();
+						} finally {
+							try {
+								conn.close();
+							} catch (SQLException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							refreshButton.doClick();
+						}
+					}
+					
+				});
+				
+				shiftFrame.setSize(300,300);
+				shiftFrame.setLocation(table.getLocationOnScreen());
+				shiftFrame.setResizable(false);
+				shiftFrame.setVisible(true);
+			}
+			
+		});
+
+		popupMenu.add(shiftMenuItem);
+		
 		popupMenu.add(incrementSalaryMenuItem);
 		table.setComponentPopupMenu(popupMenu);
 	}

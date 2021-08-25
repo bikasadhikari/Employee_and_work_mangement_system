@@ -18,6 +18,7 @@ public class AdminPanels extends JFrame{
 	JLabel adminLabelIcon;
 	JLabel adminLabel;
 	JButton manageButton;
+	JButton projectsButton;
 	JButton scheduleButton;
 	JButton reportButton;
 	JButton logoutButton;
@@ -67,13 +68,41 @@ public class AdminPanels extends JFrame{
 		manageButton.setFocusPainted(false);
 		sideButtonPanel.add(manageButton,gbc);
 		
+		manageButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Manage manage = new Manage();
+				manage.setVisible(true);
+				setVisible(false);
+			}
+
+		});
+		
+		projectsButton = new JButton();
+		projectsButton.setIcon(new ImageIcon(Icon.projectIcon));
+		projectsButton.setText("Projects");
+		projectsButton.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
+		projectsButton.setFocusPainted(false);
+		gbc.gridx = 0; gbc.gridy = 1;gbc.ipady = 20;
+		sideButtonPanel.add(projectsButton,gbc);
+		
+		projectsButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Projects projects = new Projects();
+				projects.setVisible(true);
+				setVisible(false);
+			}});
+		
 		scheduleButton = new JButton();
 		scheduleButton.setIcon(new ImageIcon(Icon.scheduleIcon));
 		scheduleButton.setText("Schedule");
 		scheduleButton.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
 		scheduleButton.setFocusPainted(false);
-		gbc.insets = new Insets(40,0,0,0);
-		gbc.gridx = 0; gbc.gridy = 1;
+		gbc.insets = new Insets(30,0,0,0);
+		gbc.gridx = 0; gbc.gridy = 2;gbc.ipady = 10;
 		sideButtonPanel.add(scheduleButton,gbc);
 		
 		reportButton = new JButton();
@@ -81,7 +110,7 @@ public class AdminPanels extends JFrame{
 		reportButton.setText("Report");
 		reportButton.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
 		reportButton.setFocusPainted(false);
-		gbc.gridx = 0; gbc.gridy = 2;
+		gbc.gridx = 0; gbc.gridy = 3;
 		sideButtonPanel.add(reportButton,gbc);
 		
 		logoutButton = new JButton();
@@ -89,7 +118,7 @@ public class AdminPanels extends JFrame{
 		logoutButton.setText("Logout");
 		logoutButton.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
 		logoutButton.setFocusPainted(false);
-		gbc.gridx = 0; gbc.gridy = 3;
+		gbc.gridx = 0; gbc.gridy = 4;
 		sideButtonPanel.add(logoutButton,gbc);
 		logoutButton.addActionListener(new ActionListener() {	//ActionListener for logout button
 			public void actionPerformed(ActionEvent e) {
