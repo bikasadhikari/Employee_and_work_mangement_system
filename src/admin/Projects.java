@@ -1,6 +1,5 @@
 package admin;
 import java.awt.AWTException;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -9,7 +8,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Robot;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -24,14 +22,13 @@ import assets.Icon;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import javax.swing.plaf.basic.BasicSplitPaneUI.BasicHorizontalLayoutManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableRowSorter;
 
 import connection.DatabaseConnection;
 
 public class Projects extends AdminPanels{
+	private static final long serialVersionUID = 1L;
 	static int countClicks = 0;
 	JPopupMenu popupMenu;
 	JMenuItem changeMenu;
@@ -39,6 +36,9 @@ public class Projects extends AdminPanels{
 	JTable table;
 	Font font1 = new Font(Font.SANS_SERIF, Font.PLAIN, 17);
 	DefaultTableModel dm;
+	static int selId;
+	JButton refreshBtn;
+	
 	public Projects() {
 		super.contentPanel.setLayout(new BoxLayout(contentPanel,BoxLayout.Y_AXIS));
 		createProjectField();
@@ -94,7 +94,7 @@ public class Projects extends AdminPanels{
 		saveButton.setFocusPainted(false);
 		gbc.ipadx = 20;gbc.ipady=10;
 		panel.add(saveButton,gbc);
-		
+
 		saveButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -109,7 +109,7 @@ public class Projects extends AdminPanels{
 				statusValue = (String) status.getSelectedItem();
 				manHrs = Integer.parseInt(hrTf.getText());
 				} catch (Exception e4) {
-					e4.printStackTrace();
+					System.out.println(e4.getLocalizedMessage());
 				}
 				if (pname.equals("") || dept.equals("") || statusValue.equals("") || Integer.toString(manHrs).equals("0")) {
 					JOptionPane.showMessageDialog(new JFrame(), "All fields are mandatory");
@@ -129,6 +129,7 @@ public class Projects extends AdminPanels{
 					int flag = pstmt.executeUpdate();
 					if (flag == 1) {
 						JOptionPane.showMessageDialog(new JFrame(), "Project saved", "",JOptionPane.INFORMATION_MESSAGE,new ImageIcon(Icon.successIcon));
+						refreshBtn.doClick();
 					}
 				} catch(Exception e1) {
 					e1.printStackTrace();
@@ -144,6 +145,7 @@ public class Projects extends AdminPanels{
 			
 		});
 		
+
 		panel.setPreferredSize(new Dimension(0,200));
 		contentPanel.add(panel);
 	}
@@ -165,12 +167,14 @@ public class Projects extends AdminPanels{
 		
 		gbc.gridx = 2;gbc.gridy=0;
 		JButton sBtn = new JButton("Search");
+		sBtn.setFocusPainted(false);
 		sBtn.setPreferredSize(new Dimension(110,30));
 		panel.add(sBtn,gbc);
 		
 		gbc.gridx=3;gbc.gridy=0;
-		JButton refreshBtn = new JButton("Refresh");
+		refreshBtn = new JButton("Refresh");
 		refreshBtn.setPreferredSize(new Dimension(110,30));
+		refreshBtn.setFocusPainted(false);
 		panel.add(refreshBtn,gbc);
 		
 		refreshBtn.addActionListener(new ActionListener() {
@@ -305,7 +309,7 @@ public class Projects extends AdminPanels{
 	    			countClicks++;
 	    			int rowSelected = table.rowAtPoint(e.getPoint());
 	    			System.out.println("Left click selected row = " + rowSelected);
-	    			int id = Integer.parseInt((table.getModel().getValueAt(rowSelected, 0)).toString());
+//	    			int id = Integer.parseInt((table.getModel().getValueAt(rowSelected, 0)).toString());
 	    		}
 	    		if (SwingUtilities.isRightMouseButton(e) == true) {
 	    			countClicks++;
@@ -352,6 +356,7 @@ public class Projects extends AdminPanels{
             }
         });
 		JMenuItem changeMenu = new JMenuItem("Update");
+		JMenuItem deleteBtn = new JMenuItem("Delete");
 		changeMenu.addActionListener(new ActionListener() {
 
 			@Override
@@ -379,7 +384,7 @@ public class Projects extends AdminPanels{
 				panel.add(pNameLabel,gbc);
 				
 				gbc.gridx=1;gbc.gridy=1;gbc.insets=new Insets(0,0,20,25);
-				JTextField pnameValue = new JTextField();
+				JTextField pnameValue = new JTextField((String)table.getValueAt(table.getSelectedRow(), 1));
 				pnameValue.setPreferredSize(new Dimension(110,30));
 				panel.add(pnameValue,gbc);
 				
@@ -390,15 +395,17 @@ public class Projects extends AdminPanels{
 				
 				gbc.gridx=1;gbc.gridy=2;gbc.insets=new Insets(0,0,20,25);
 				JTextField manValue = new JTextField();
+				int manVal = Integer.parseInt((table.getModel().getValueAt(table.getSelectedRow(), 2)).toString());
+				manValue.setText((String)Integer.toString(manVal));
 				manValue.setPreferredSize(new Dimension(110,30));
 				panel.add(manValue,gbc);
 				
 				gbc.gridx=0;gbc.gridy=3;gbc.insets=new Insets(0,0,20,25);
-				JLabel deptLabel = new JLabel("Man Hours");
+				JLabel deptLabel = new JLabel("Department");
 				deptLabel.setPreferredSize(new Dimension(110,30));
 				panel.add(deptLabel,gbc);
 				gbc.gridx=1;gbc.gridy=3;gbc.insets=new Insets(0,0,20,25);
-				JTextField deptValue = new JTextField();
+				JTextField deptValue = new JTextField((String)table.getModel().getValueAt(table.getSelectedRow(), 3));
 				deptValue.setPreferredSize(new Dimension(110,30));
 				panel.add(deptValue,gbc);
 				
@@ -410,12 +417,47 @@ public class Projects extends AdminPanels{
 				gbc.gridx=1;gbc.gridy=4;gbc.insets=new Insets(0,0,20,25);
 				String sValues[] = {"Open","Closed"};
 				JComboBox<String> status = new JComboBox<String>(sValues);
+				String stat = (String)table.getModel().getValueAt(table.getSelectedRow(), 4);
+				if (stat.equals("Open"))
+					status.setSelectedIndex(0);
+				else
+					status.setSelectedIndex(1);
 				panel.add(status,gbc);
 				
 				gbc.gridx=0;gbc.gridy=5;gbc.gridwidth=2;gbc.insets=new Insets(0,0,20,25);gbc.anchor=GridBagConstraints.CENTER;
 				JButton updateBtn = new JButton("Update");
 				updateBtn.setPreferredSize(new Dimension(150,30));
 				panel.add(updateBtn,gbc);
+				
+				updateBtn.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						DatabaseConnection db = new DatabaseConnection();
+						Connection conn = null;
+						conn = db.getConnection(conn);
+						String query = "update projects set pname=?,manhrs=?,dept=?,status=? where id=?";
+						try {
+							PreparedStatement pstmt = conn.prepareStatement(query);
+							pstmt.setString(1, pnameValue.getText());
+							pstmt.setInt(2, Integer.parseInt(manValue.getText()));
+							pstmt.setString(3, deptValue.getText());
+							pstmt.setString(4, (String) status.getSelectedItem());
+							pstmt.setInt(5, Integer.parseInt(idTf.getText()));
+							int flag = pstmt.executeUpdate();
+							if (flag == 1) {
+								JOptionPane.showMessageDialog(new JFrame(), "Update successfull","", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(Icon.successIcon));
+								project.setVisible(false);
+								refreshBtn.doClick();
+							} else {
+								JOptionPane.showMessageDialog(new JFrame(), "Update failed!","",JOptionPane.ERROR_MESSAGE);
+							}
+						} catch(Exception e3) {
+							JOptionPane.showMessageDialog(new JFrame(), e3.getLocalizedMessage(),"",JOptionPane.ERROR_MESSAGE);;
+						}
+					}
+					
+				});
 				
 				project.add(panel);
 				project.setBounds(300,200,400,400);
@@ -424,7 +466,36 @@ public class Projects extends AdminPanels{
 			}
 			
 		});
+		deleteBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int status = JOptionPane.showConfirmDialog(new JFrame(), "Are you sure that you want to delete the project with ID = " + popupMenuId + " ?");
+				System.out.print(status);
+				if (status == 0) {
+					DatabaseConnection db = new DatabaseConnection();
+					Connection conn = null;
+					conn = db.getConnection(conn);
+					String query = "Delete from projects where id=?";
+					try {
+						PreparedStatement pstmt = conn.prepareStatement(query);
+						pstmt.setInt(1, popupMenuId);
+						int flag = pstmt.executeUpdate();
+						if (flag == 1) {
+							JOptionPane.showMessageDialog(new JFrame(), "Project deleted");
+							refreshBtn.doClick();
+						} else {
+							JOptionPane.showMessageDialog(new JFrame(), "Something went wrong!");
+						}
+					} catch (Exception e5) {
+						JOptionPane.showMessageDialog(new JFrame(), e5.getLocalizedMessage());
+					}
+				}
+			}
+			
+		});
 		popupMenu.add(changeMenu);
+		popupMenu.add(deleteBtn);
 		table.setComponentPopupMenu(popupMenu);
 	}
 }

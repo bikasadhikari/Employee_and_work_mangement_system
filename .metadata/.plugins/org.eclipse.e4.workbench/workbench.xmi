@@ -122,7 +122,6 @@
               <children xsi:type="basic:PartStack" xmi:id="__nZubgEYEeyxaOLUwU4FJw" elementId="bottomRight" containerData="2690" selectedElement="__nZueAEYEeyxaOLUwU4FJw">
                 <tags>Java</tags>
                 <tags>active</tags>
-                <tags>noFocus</tags>
                 <children xsi:type="advanced:Placeholder" xmi:id="__nZubwEYEeyxaOLUwU4FJw" elementId="org.eclipse.ui.views.AllMarkersView" ref="__mnEMAEYEeyxaOLUwU4FJw" closeable="true">
                   <tags>View</tags>
                   <tags>categoryTag:General</tags>
@@ -376,7 +375,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="__QK6IAEYEeyxaOLUwU4FJw" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_YTeKEAEaEeyJ4bIXu8TEoQ" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_-PGevgEYEeyxaOLUwU4FJw"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_6z6aUAikEeyPKc_wF8AcoA" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_-PGevgEYEeyxaOLUwU4FJw"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="__QK6IQEYEeyxaOLUwU4FJw" elementId="group.edit" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -410,7 +409,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="__QNWYAEYEeyxaOLUwU4FJw" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_YTms8AEaEeyJ4bIXu8TEoQ" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" enabled="false" type="Check" command="_-PFQlQEYEeyxaOLUwU4FJw"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_60CWIAikEeyPKc_wF8AcoA" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" enabled="false" type="Check" command="_-PFQlQEYEeyxaOLUwU4FJw"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="__QN9cAEYEeyxaOLUwU4FJw" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -2907,7 +2906,7 @@
   <addons xmi:id="_-NswlQEYEeyxaOLUwU4FJw" elementId="MinMax Addon" contributorURI="platform:/plugin/org.eclipse.platform" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.addons.swt/org.eclipse.e4.ui.workbench.addons.minmax.MinMaxAddon"/>
   <addons xmi:id="_-NswlgEYEeyxaOLUwU4FJw" elementId="org.eclipse.ui.workbench.addon.0" contributorURI="platform:/plugin/org.eclipse.platform" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.HandlerProcessingAddon"/>
   <addons xmi:id="_-OASgAEYEeyxaOLUwU4FJw" elementId="SplitterAddon" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.addons.swt/org.eclipse.e4.ui.workbench.addons.splitteraddon.SplitterAddon"/>
-  <addons xmi:id="_X01tUAEaEeyJ4bIXu8TEoQ" elementId="org.eclipse.ui.ide.addon.0" contributionURI="bundleclass://org.eclipse.ui.ide/org.eclipse.ui.internal.ide.addons.SaveAllDirtyPartsAddon"/>
+  <addons xmi:id="_IYS0IKimEeS11vbz3f9ezw" elementId="org.eclipse.ui.ide.addon.0" contributorURI="platform:/plugin/org.eclipse.ui.ide" contributionURI="bundleclass://org.eclipse.ui.ide/org.eclipse.ui.internal.ide.addons.SaveAllDirtyPartsAddon"/>
   <addons xmi:id="_dz0JgGOlEeSMMaPQU2nlzw" elementId="org.eclipse.ui.ide.application.addon.0" contributorURI="platform:/plugin/org.eclipse.ui.ide.application" contributionURI="bundleclass://org.eclipse.ui.ide.application/org.eclipse.ui.internal.ide.application.addons.ModelCleanupAddon"/>
   <categories xmi:id="_-OuEMAEYEeyxaOLUwU4FJw" elementId="org.eclipse.ui.category.edit" name="Edit"/>
   <categories xmi:id="_-OuEMQEYEeyxaOLUwU4FJw" elementId="org.eclipse.mylyn.wikitext.ui.editor.category" name="WikiText Markup Editing Commands" description="commands for editing lightweight markup"/>
