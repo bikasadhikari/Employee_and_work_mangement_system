@@ -121,6 +121,16 @@ public class AdminPanels extends JFrame{
 		reportButton.setText("Report");
 		reportButton.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
 		reportButton.setFocusPainted(false);
+		reportButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Report report = new Report();
+				report.setVisible(true);
+				setVisible(false);
+			}
+			
+		});
 		gbc.gridx = 0; gbc.gridy = 3;
 		sideButtonPanel.add(reportButton,gbc);
 		

@@ -474,6 +474,30 @@ public class Projects extends AdminPanels{
 							pstmt.setInt(5, Integer.parseInt(idTf.getText()));
 							int flag = pstmt.executeUpdate();
 							if (flag == 1) {
+								if (status.getSelectedItem().equals("Closed")) {
+									System.out.println("closed");
+									query = "Select * from schedule where pid=?";
+									pstmt = conn.prepareStatement(query);
+									pstmt.setInt(1, Integer.parseInt(idTf.getText()));
+									ResultSet rs = pstmt.executeQuery();
+									int sid = 0;
+									if (rs.next()) {
+										sid = rs.getInt("sid");
+									}
+									System.out.println(sid);
+									query = "select * from assigned_projects where sid=?";
+									pstmt = conn.prepareStatement(query);
+									pstmt.setInt(1, sid);
+									ResultSet rs1 = pstmt.executeQuery();
+									while (rs1.next()) {
+										int eid = rs1.getInt("eid");
+										query = "update employees set inproject=? where id=?";
+										pstmt = conn.prepareStatement(query);
+										pstmt.setInt(1, 0);
+										pstmt.setInt(2, eid);
+										pstmt.executeUpdate();
+									}
+								}
 								JOptionPane.showMessageDialog(new JFrame(), "Update successfull","", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(Icon.successIcon));
 								project.setVisible(false);
 								refreshBtn.doClick();

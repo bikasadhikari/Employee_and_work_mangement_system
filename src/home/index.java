@@ -1,6 +1,7 @@
 package home;
 
 import admin.Projects;
+import admin.Report;
 import admin.Schedule;
 
 public class index {
@@ -12,8 +13,10 @@ public class index {
 //		ad.setVisible(true);
 //		Projects p = new Projects();
 //		p.setVisible(true);
-		Schedule s = new Schedule();
-		s.setVisible(true);
+//		Schedule s = new Schedule();
+//		s.setVisible(true);
+		Report report = new Report();
+		report.setVisible(true);
 	}
 
 }

@@ -38,7 +38,7 @@ public class Schedule extends AdminPanels {
 	static String ldesig;
 	static int ecount;
 	static int memberId;
-	static int[] eids = new int[15];
+	int[] eids = new int[15];
 	
 	public Schedule() {
 		super.contentPanel.setLayout(new BoxLayout(contentPanel,BoxLayout.Y_AXIS));
