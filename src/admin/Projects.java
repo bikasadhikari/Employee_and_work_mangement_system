@@ -119,16 +119,21 @@ public class Projects extends AdminPanels{
 				DatabaseConnection db = new DatabaseConnection();
 				Connection conn = null;
 				conn = db.getConnection(conn);
-				String query = "insert into projects (pname,manhrs,dept,status) values(?,?,?,?)";
+				String query = "insert into projects (pname,manhrs,dept,status,assign) values(?,?,?,?,?)";
 				try {
 					PreparedStatement pstmt = conn.prepareStatement(query);
 					pstmt.setString(1, pname);
 					pstmt.setInt(2, manHrs);
 					pstmt.setString(3, dept);
 					pstmt.setString(4, statusValue);
+					pstmt.setInt(5, 0);
 					int flag = pstmt.executeUpdate();
 					if (flag == 1) {
 						JOptionPane.showMessageDialog(new JFrame(), "Project saved", "",JOptionPane.INFORMATION_MESSAGE,new ImageIcon(Icon.successIcon));
+						pNametf.setText("");
+						hrTf.setText("");
+						deptTf.setText("");
+						status.setSelectedIndex(0);
 						refreshBtn.doClick();
 					}
 				} catch(Exception e1) {
@@ -195,8 +200,14 @@ public class Projects extends AdminPanels{
 						int manHr = rs.getInt("manhrs");
 						String dept = rs.getString("dept");
 						String status = rs.getString("status");
-						
-						dm.addRow(new Object[] {id,pname,manHr,dept,status});
+						int assign = rs.getInt("assign");
+						String assigned;
+						if (assign == 0) {
+							assigned = "Not Assigned";
+						}else {
+							assigned = "Assigned";
+						}
+						dm.addRow(new Object[] {id,pname,manHr,dept,status,assigned});
 					}
 				} catch (Exception e3) {
 					e3.printStackTrace();
@@ -229,7 +240,14 @@ public class Projects extends AdminPanels{
 					ResultSet rs = pstmt.executeQuery();
 					while (rs.next()) {
 						System.out.println(rs.getString("pname"));
-						dm.addRow(new Object[] {rs.getInt("id"),rs.getString("pname"),rs.getInt("manhrs"),rs.getString("dept"),rs.getString("status")});
+						int assign = rs.getInt("assign");
+						String assigned;
+						if (assign == 0) {
+							assigned = "Not Assigned";
+						}else {
+							assigned = "Assigned";
+						}
+						dm.addRow(new Object[] {rs.getInt("id"),rs.getString("pname"),rs.getInt("manhrs"),rs.getString("dept"),rs.getString("status"),assigned});
 					}
 				} catch(Exception e4) {
 					e4.printStackTrace();
@@ -260,6 +278,7 @@ public class Projects extends AdminPanels{
 		dm.addColumn("Man Hours");
 		dm.addColumn("Department");
 		dm.addColumn("Status");
+		dm.addColumn("Asssign Status");
 		table = new JTable(dm) {
 			private static final long serialVersionUID = 1L;
 
@@ -278,6 +297,7 @@ public class Projects extends AdminPanels{
 	    columnModel.getColumn(2).setPreferredWidth(120);
 	    columnModel.getColumn(3).setPreferredWidth(250);
 	    columnModel.getColumn(4).setPreferredWidth(150);
+	    columnModel.getColumn(5).setPreferredWidth(150);
 		JScrollPane sc = new JScrollPane(table);
 		
 		panel.add(sc);
@@ -297,8 +317,14 @@ public class Projects extends AdminPanels{
 				int manHr = rs.getInt("manhrs");
 				String dept = rs.getString("dept");
 				String status = rs.getString("status");
-				
-				dm.addRow(new Object[] {id,pname,manHr,dept,status});
+				int assign = rs.getInt("assign");
+				String assigned;
+				if (assign == 0) {
+					assigned = "Not Assigned";
+				}else {
+					assigned = "Assigned";
+				}
+				dm.addRow(new Object[] {id,pname,manHr,dept,status,assigned});
 			}
 		} catch (Exception e3) {
 			e3.printStackTrace();
@@ -415,13 +441,15 @@ public class Projects extends AdminPanels{
 				panel.add(statLabel,gbc);
 				
 				gbc.gridx=1;gbc.gridy=4;gbc.insets=new Insets(0,0,20,25);
-				String sValues[] = {"Open","Closed"};
+				String sValues[] = {"Open","In Progress","Closed"};
 				JComboBox<String> status = new JComboBox<String>(sValues);
 				String stat = (String)table.getModel().getValueAt(table.getSelectedRow(), 4);
 				if (stat.equals("Open"))
 					status.setSelectedIndex(0);
-				else
+				else if (stat.equals("In Progress"))
 					status.setSelectedIndex(1);
+				else 
+					status.setSelectedIndex(2);
 				panel.add(status,gbc);
 				
 				gbc.gridx=0;gbc.gridy=5;gbc.gridwidth=2;gbc.insets=new Insets(0,0,20,25);gbc.anchor=GridBagConstraints.CENTER;

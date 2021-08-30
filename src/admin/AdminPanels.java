@@ -19,7 +19,7 @@ public class AdminPanels extends JFrame{
 	JLabel adminLabel;
 	JButton manageButton;
 	JButton projectsButton;
-	JButton scheduleButton;
+	public JButton scheduleButton;
 	JButton reportButton;
 	JButton logoutButton;
 	GridBagConstraints gbc;
@@ -104,6 +104,17 @@ public class AdminPanels extends JFrame{
 		gbc.insets = new Insets(30,0,0,0);
 		gbc.gridx = 0; gbc.gridy = 2;gbc.ipady = 10;
 		sideButtonPanel.add(scheduleButton,gbc);
+		
+		scheduleButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Schedule sc = new Schedule();
+				sc.setVisible(true);
+				setVisible(false);
+			}
+			
+		});
 		
 		reportButton = new JButton();
 		reportButton.setIcon(new ImageIcon(Icon.reportIcon));
