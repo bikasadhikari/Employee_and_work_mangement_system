@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import assets.Icon;
+import employee.Login;
 
 @SuppressWarnings("serial")
 public class Home extends JFrame{
@@ -40,6 +41,18 @@ public class Home extends JFrame{
 		adminLoginButton.setFocusPainted(false);
 		employeeLoginButton.setFocusPainted(false);
 		exitButton.setFocusPainted(false);
+		
+		employeeLoginButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Login login = new Login();
+				login.setVisible(true);
+				setVisible(false);
+			}
+			
+		});
+		
 		adminLoginButton.setToolTipText("Admin Login"); 
 		employeeLoginButton.setToolTipText("Employee Login"); 
 		exitButton.setToolTipText("Exit");
