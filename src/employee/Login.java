@@ -3,7 +3,6 @@ package employee;
 import connection.DatabaseConnection;
 import assets.Icon;
 import home.Home;
-import employee.Index;
 import java.sql.*;
 import java.awt.*;
 import java.awt.event.*;

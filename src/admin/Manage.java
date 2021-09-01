@@ -126,6 +126,8 @@ public class Manage extends AdminPanels {
 		searchFilter.setSelectedIndex(0);
 		searchFilter.setPreferredSize(new Dimension(70, 29));
 		searchSrButtonPanel.add(searchFilter);
+		
+
 		searchTextField.getDocument().addDocumentListener(new DocumentListener() {
 			public void changedUpdate(DocumentEvent arg0) {	
 				searchEmployees(searchStr());
@@ -262,6 +264,8 @@ public class Manage extends AdminPanels {
 					} catch (Exception e1) {
 						System.out.println(e1.getMessage());
 						db.showErrorMessage("Alert!", "Something went wrong!\n" + e1.getLocalizedMessage());
+					} finally {
+						db.closeConnection(conn);
 					}
 				}
 			}
@@ -634,12 +638,9 @@ public class Manage extends AdminPanels {
 				} catch(Exception e2) {
 					e2.printStackTrace();
 				} finally {
-					try {
-						conn.close();
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					
+						db.closeConnection(conn);
+					
 				}
 				
 				JFrame shiftFrame = new JFrame("Shift");
@@ -934,6 +935,8 @@ public class Manage extends AdminPanels {
 		} catch (Exception e1) {
 			System.out.println(e1.getMessage());
 			db.showErrorMessage("Alert!", "Something went wrong!\n" + e1.getLocalizedMessage());
+		} finally {
+			db.closeConnection(conn);
 		}
 	}
 	//end of method for editing employees
@@ -957,6 +960,7 @@ public class Manage extends AdminPanels {
 			System.out.println(e.getLocalizedMessage());
 			flag = 1;
 		}
+		
 		if (flag == 0)
 			return false;
 		return true;

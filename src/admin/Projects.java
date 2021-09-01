@@ -528,7 +528,30 @@ public class Projects extends AdminPanels{
 					DatabaseConnection db = new DatabaseConnection();
 					Connection conn = null;
 					conn = db.getConnection(conn);
-					String query = "Delete from projects where id=?";
+					String query = "select sid from schedule where pid=?";
+					try {
+						PreparedStatement pstmt = conn.prepareStatement(query);
+						pstmt.setInt(1, popupMenuId);
+						ResultSet rs = pstmt.executeQuery();
+						if (rs.next()) {
+							int sid = rs.getInt("sid");
+							query = "select eid from assigned_projects where sid=?";
+							PreparedStatement pstmt1 = conn.prepareStatement(query);
+							pstmt1.setInt(1, sid);
+							ResultSet rs1 = pstmt1.executeQuery();
+							while (rs1.next()) {
+								int eid = rs1.getInt("eid");
+								query = "update employees set inproject=? where id=?";
+								PreparedStatement pstmt2 = conn.prepareStatement(query);
+								pstmt2.setInt(1, 0);
+								pstmt2.setInt(2, eid);
+								pstmt2.executeUpdate();
+							}
+						}
+					} catch(Exception e2) {
+						e2.printStackTrace();
+					}
+					query = "Delete from projects where id=?";
 					try {
 						PreparedStatement pstmt = conn.prepareStatement(query);
 						pstmt.setInt(1, popupMenuId);
